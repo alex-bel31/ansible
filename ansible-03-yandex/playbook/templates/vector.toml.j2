@@ -1,0 +1,15 @@
+# /etc/vector/vector.toml
+
+[sources.system]
+type = "journald"
+
+[sinks.clickhouse]
+type = "clickhouse"
+inputs = ["system"]
+endpoint = "http://{{ hostvars['db-clickhouse']['ansible_host'] }}:8123"
+database = "{{ clickhouse_database }}"
+table = "{{ clickhouse_table }}"
+compression = "gzip"
+
+[sinks.clickhouse.encoding]
+codec = "json"

@@ -1,0 +1,5 @@
+---
+# vector variables
+vector_config_path: "/etc/vector/vector.toml"
+clickhouse_database: logs
+clickhouse_table: system_logs

@@ -1,0 +1,150 @@
+---
+- name: Install NGINX
+  hosts: lighthouse
+  tags: install_nginx
+  handlers: 
+    - name: Start NGINX
+      become: true
+      command: nginx
+
+    - name: Reload NGINX
+      become: true
+      command: nginx -s reload
+  tasks:
+    - name: Install NGINX
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+      become: true
+      notify: Start NGINX
+
+    - name: Template config NGINX
+      ansible.builtin.template:
+        src: templates/nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+        mode: '0644'
+      become: true
+      notify: Reload NGINX
+
+- name: Install Lighthouse
+  hosts: lighthouse
+  tags: install_lighthouse
+  handlers:
+    - name: Restart NGINX
+      become: true
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+  pre_tasks:
+    - name: installing dependencies for lighthouse
+      become: true
+      ansible.builtin.apt:
+        name: git
+        state: present
+  tasks:
+    - name: Copy from git lighthouse
+      ansible.builtin.git:
+        repo: "{{ git_url }}"
+        version: master
+        dest: "{{ lighthouse_path }}"
+    - name: Configure Nginx site for Lighthouse
+      become: true
+      ansible.builtin.template:
+        src: templates/lighthouse.conf.j2
+        dest: /etc/nginx/conf.d/lighthouse.conf
+      notify: Restart NGINX
+
+- name: Install Clickhouse
+  hosts: clickhouse
+  tags: install_clickhouse
+  handlers:
+    - name: Start clickhouse service
+      become: true
+      ansible.builtin.service:
+        name: clickhouse-server
+        state: restarted
+        enabled: true
+  tasks:
+    - name: Install ClickHouse packages
+      become: true
+      ansible.builtin.apt:
+        name:
+          - clickhouse-server
+          - clickhouse-client
+        state: present
+        update_cache: yes
+      notify: Start clickhouse service    
+    
+    - name: Flush handlers
+      ansible.builtin.meta: flush_handlers
+
+    - name: Wait for ClickHouse to become available
+      ansible.builtin.wait_for:
+        host: 127.0.0.1
+        port: 9000
+        timeout: 30
+
+    - name: Create database
+      ansible.builtin.command: "clickhouse-client -q 'create database {{clickhouse_database}};'"
+      register: create_db
+      failed_when: create_db.rc != 0 and create_db.rc != 82
+      changed_when: create_db.rc == 0
+
+    - name: Create lighthouse_logs table
+      ansible.builtin.command: >
+        clickhouse-client -q "
+        CREATE TABLE IF NOT EXISTS {{clickhouse_database}}.{{clickhouse_table}} (
+          timestamp DateTime,
+          level String,
+          message String,
+          path String,
+          host String
+        ) ENGINE = MergeTree()
+        ORDER BY timestamp
+        "
+      register: create_table
+      changed_when: "'Ok.' in create_table.stdout or create_table.rc == 0"
+
+- name: Install Vector
+  hosts: vector
+  handlers:
+    - name: Start vector service
+      become: true
+      ansible.builtin.service:
+        name: vector
+        state: restarted
+        enabled: true
+
+  tasks:
+    - name: Add Vector APT repository
+      become: true
+      ansible.builtin.shell: |
+        bash -c "$(curl -L https://setup.vector.dev)"
+      args:
+        creates: /etc/apt/sources.list.d/vector.list
+
+    - name: Install Vector via APT
+      become: true
+      ansible.builtin.apt:
+        name: vector
+        state: present
+        update_cache: yes
+
+    - name: Ensure directory for vector config exists
+      ansible.builtin.file:
+        path: "{{ vector_config_path | dirname }}"
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+      become: true
+
+    - name: Template config vector
+      ansible.builtin.template:
+        src: templates/vector.toml.j2
+        dest: "{{ vector_config_path }}"
+        owner: root
+        group: root
+        mode: '0644'
+      become: true
+      notify: Start vector service

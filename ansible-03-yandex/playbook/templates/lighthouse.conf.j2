@@ -1,0 +1,17 @@
+server {
+    listen 80;
+    server_name {{ ansible_host }};
+
+    root /home/alexbel77/lighthouse;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location /clickhouse/ {
+        proxy_pass http://{{ hostvars['db-clickhouse']['ansible_host'] }}:8123/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}

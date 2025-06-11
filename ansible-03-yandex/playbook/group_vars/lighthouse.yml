@@ -1,0 +1,4 @@
+---
+# lighthouse variables
+lighthouse_path: /home/alexbel77/lighthouse
+git_url: https://github.com/VKCOM/lighthouse.git

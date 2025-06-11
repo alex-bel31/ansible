@@ -1,0 +1,20 @@
+clickhouse:
+  hosts:
+    db-clickhouse:
+      ansible_host: 158.160.101.149
+      ansible_user: alexbel77
+      ansible_ssh_private_key_file: ~/.ssh/yavm
+
+lighthouse:
+  hosts:
+    ui-lighthouse:
+      ansible_host: 158.160.107.9
+      ansible_user: alexbel77
+      ansible_ssh_private_key_file: ~/.ssh/yavm
+
+vector:
+  hosts:
+    logs-vector:
+      ansible_host: 158.160.113.4
+      ansible_user: alexbel77
+      ansible_ssh_private_key_file: ~/.ssh/yavm
