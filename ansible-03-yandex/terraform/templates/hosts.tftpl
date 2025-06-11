@@ -1,0 +1,32 @@
+clickhouse:
+  hosts:
+%{~ for name, ip in vm.external_ip_address ~}
+%{ if name == "db-clickhouse" }
+    ${name}:
+      ansible_host: ${ip}
+      ansible_user: ${ssh_username}
+      ansible_ssh_private_key_file: ${private_key_path}
+%{ endif ~}
+%{ endfor ~}
+
+lighthouse:
+  hosts:
+%{~ for name, ip in vm.external_ip_address ~}
+%{ if name == "ui-lighthouse" }
+    ${name}:
+      ansible_host: ${ip}
+      ansible_user: ${ssh_username}
+      ansible_ssh_private_key_file: ${private_key_path}
+%{ endif ~}
+%{ endfor ~}
+
+vector:
+  hosts:
+%{~ for name, ip in vm.external_ip_address ~}
+%{ if name == "logs-vector" }
+    ${name}:
+      ansible_host: ${ip}
+      ansible_user: ${ssh_username}
+      ansible_ssh_private_key_file: ${private_key_path}
+%{ endif ~}
+%{ endfor ~}
