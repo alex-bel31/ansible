@@ -28,7 +28,7 @@
 
 ## Инвентарь и инфраструктура
 
-Виртуальные машины и Ansible инвентарь создаются отдельно с помощью Terraform. Реализацию можно посмотреть в [/terraform]().
+Виртуальные машины и Ansible инвентарь создаются отдельно с помощью Terraform. Реализацию можно посмотреть в [/terraform](https://github.com/alex-bel31/ansible/tree/main/ansible-03-yandex/terraform).
 
 
 
