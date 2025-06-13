@@ -1,0 +1,5 @@
+---
+# lighthouse variables
+lighthouse_root: "/opt/lighthouse"
+clickhouse_http_host: "{{ hostvars['db-clickhouse']['ansible_host'] }}"
+clickhouse_http_port: 8123

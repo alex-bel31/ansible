@@ -1,0 +1,19 @@
+---
+# clickhouse variables
+clickhouse_listen_host:
+  - "0.0.0.0"
+
+clickhouse_dbs_custom:
+  - name: logs
+
+clickhouse_users_custom:
+  - name: vector
+    password: ""
+    profile: default
+    quota: default
+    networks:
+      - "0.0.0.0/0"
+
+clickhouse_database: logs
+clickhouse_table: lighthouse_logs
+

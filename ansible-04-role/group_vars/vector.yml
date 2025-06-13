@@ -1,0 +1,6 @@
+---
+# vector variables
+clickhouse_http_host: "{{ hostvars['db-clickhouse']['ansible_host'] }}"
+clickhouse_database: logs
+clickhouse_table: lighthouse_logs
+vector_config_path: "/etc/vector/vector.toml"

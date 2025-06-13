@@ -1,0 +1,30 @@
+---
+- name: Install ClickHouse
+  hosts: clickhouse
+  roles:
+    - clickhouse
+  tasks:
+    - name: Create lighthouse_logs table
+      ansible.builtin.command: >
+        clickhouse-client -q "
+        CREATE TABLE IF NOT EXISTS {{clickhouse_database}}.{{clickhouse_table}} (
+          timestamp DateTime,
+          level String,
+          message String,
+          path String,
+          host String
+        ) ENGINE = MergeTree()
+        ORDER BY timestamp
+        "
+      register: create_table
+      changed_when: "'Ok.' in create_table.stdout or create_table.rc == 0"
+
+- name: Install Vector
+  hosts: vector
+  roles:
+    - vector
+
+- name: Install Lighthouse
+  hosts: lighthouse
+  roles:
+    - lighthouse
