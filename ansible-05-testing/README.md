@@ -30,22 +30,16 @@
 
 2. Репозиторий был смонтирован в контейнер с образом `aragast/netology:latest` с помощью команды:
 
-  ```bash
-  docker run --privileged=True -v ./:/opt/vector-role -w /opt/vector-role -it aragast/netology:latest /bin/bash
-  ```
+```bash
+docker run --privileged=True -v ./:/opt/vector-role -w /opt/vector-role -it aragast/netology:latest /bin/bash
+```
 3. Внутри контейнера запущена команда `tox`. В процессе запуска выполнялся сценарий с драйвером `podman`.
 
+     * Все этапы тестирования, включая `converge`, `verify` и `destroy`, успешно завершились.
 
-* В файле `tox.ini` была указана корректная команда запуска упрощённого сценария через `molecule`, чтобы он запускался из `tox`.
+4. В `verify.yml` были прописаны проверки:
 
- Все этапы тестирования, включая `converge`, `verify` и `destroy`, успешно завершились.
-
-* В `verify.yml` были прописаны проверки:
-
-  * наличие бинарника `vector`;
-  * валидация конфигурации;
-  * запуск процесса Vector.
-
-* В `prepare.yml` обеспечена установка Python на тестовом образе `oraclelinux:8`.
-
-Итоговый стабильный сценарий отмечен тегом [`v1.2.0` ]()
+    * наличие бинарника `vector`;
+    * валидация конфигурации;
+    
+Итоговый сценарий отмечен тегом [`v1.2.0` ]()
