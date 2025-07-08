@@ -5,16 +5,16 @@
 
 Сценарий тестирования включал в себя:
 
-* предварительную установку Python на целевых хостах (playbook `prepare.yml`);
-* установку роли;
-* проверку корректности установки и работы `vector`.
+* предварительную установку Python на целевых хостах (playbook `prepare.yml`)
+* установку роли
+* проверку корректности установки и работы `vector`
 
 Проверки в `verify.yml` включали:
 
-* наличие бинарника `vector`;
-* валидацию конфигурации командой `vector validate`;
-* проверку запущенного процесса `vector`;
-* поиск ошибок в логах.
+* наличие бинарника `vector`
+* валидацию конфигурации командой `vector validate`
+* проверку запущенного процесса `vector`
+* поиск ошибок в логах
 
 Были установлены зависимости для `molecule` в `requirements.txt`, включая `molecule-docker`, `ansible`, `ansible-compat`, `yamllint` и другие.
 
@@ -22,7 +22,15 @@
 
 В процессе были выявлены и устранены ошибки, связанные с отсутствием `sudo` и `python3` в базовых образах. Все проверки прошли успешно.
 
-Результат зафиксирован в виде git-тега [`v1.1.0` ]()
+<center>
+ <img src="img/vector-idempotence.JPG">
+</center>
+
+<center>
+ <img src="img/vector-verify.JPG">
+</center>
+
+Результат зафиксирован в виде git-тега [`v1.1.0` ](https://github.com/alex-bel31/ansible-vector/releases/tag/v1.1.0)
 
 ### Tox
 
@@ -39,7 +47,7 @@ docker run --privileged=True -v ./:/opt/vector-role -w /opt/vector-role -it arag
 
 4. В `verify.yml` были прописаны проверки:
 
-    * наличие бинарника `vector`;
-    * валидация конфигурации;
+    * наличие бинарника `vector`
+    * валидация конфигурации
     
-Итоговый сценарий отмечен тегом [`v1.2.0` ]()
+Итоговый сценарий отмечен тегом [`v1.2.0` ](https://github.com/alex-bel31/ansible-vector/releases/tag/v1.2.0)
