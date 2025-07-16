@@ -45,7 +45,7 @@
     <img src="img/test-t5_6.JPG">
     </center>
 
-5. Была инициализирована новая коллекция, а также заполнена документация и создана роль для модуля. Затем коллекция была установлена из локального архива и проверена с помощью **playbook**:
+5. Была инициализирована новая коллекция, заполнена документация и создана роль для модуля. Из локального архива установлена коллекция и проверена с помощью **playbook**:
 
     <center>
     <img src="img/collection-install-t15.JPG">
@@ -54,6 +54,6 @@
     <img src="img/test-t16.JPG">
     </center>
 
-**Ссылка на архив с коллекцией** - [alex_bel31-file_utils-1.0.0.tar.gz](https://github.com/alex-bel31/ansible-collection-file-utils/blob/main/artifacts/alex_bel31-file_utils-1.0.0.tar.gz)
+**Ссылка на архив с collection** - [alex_bel31-file_utils-1.0.0.tar.gz](https://github.com/alex-bel31/ansible-collection-file-utils/blob/main/artifacts/alex_bel31-file_utils-1.0.0.tar.gz)
 
-**Ссылка на репозиторий с колекцией** - [ansible-collection-file-utils](https://github.com/alex-bel31/ansible-collection-file-utils/tree/main)
+**Ссылка на репозиторий с collection** - [ansible-collection-file-utils](https://github.com/alex-bel31/ansible-collection-file-utils/tree/main)
